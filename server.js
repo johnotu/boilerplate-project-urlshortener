@@ -68,6 +68,14 @@ app.post('/api/shorturl/new', function (req, res) {
   }
 });
 
+app.get('/api/shorturl/:shortcode', function (req, res) {
+  Url.findOne({ short_url: req.params.shortcode }, function (err, url) {
+    if (!err && url) {
+      res.redirect(url.original_url);
+    } else { return res.json({ error: "invalid URL" }) }
+  });
+});
+
 app.use('/public', express.static(process.cwd() + '/public'));
 
 app.get('/', function (req, res) {
