@@ -18,6 +18,23 @@ app.use(cors());
 
 /** this project needs to parse POST bodies **/
 // you should mount the body-parser here
+mongoose.connect(process.env.MONGOLAB_URI);
+
+mongoose.connection.on('connected', function () {
+  console.log('FCC Glitch conected to DB');
+});
+
+mongoose.connection.on('error', function (err) {
+  console.log('Error connecting to DB ', err);
+});
+
+var UrlSchema = new mongoose.Schema({
+  original_url: { type: String },
+  short_url: { type: String },
+  created_at: { type: Date }
+});
+
+var Url = mongoose.model('Url', UrlSchema);
 
 app.use('/public', express.static(process.cwd() + '/public'));
 
